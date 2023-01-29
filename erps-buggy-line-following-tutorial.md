@@ -97,6 +97,7 @@ Now let's perform our calculation. Drag a ``||math.0 - 0||`` block in to replace
 
 Then replace the right-hand-side with the 'leftSensor' variable, and the right-hand-side with the 'rightSensor' variable.
 
+#### ~ tutorialhint
 ```blocks
 basic.forever(function () {
     leftSensor = Kitronik_Move_Motor.readSensor(Kitronik_Move_Motor.LfSensor.Left)
@@ -105,7 +106,166 @@ basic.forever(function () {
 })
 ```
 
-### Motorised Buggy - Line Following Tutorial Complete @unplugged
-Great work! You've just coded your first functions for your buggy! Now you're really motoring ;). 
+## Checking our sensor
+### Step 6
+Now we are getting data from our sensor, we need to do something with it. In our case, we want to know how different
+the surface is that our two sensors are looking at. If there's a small difference, carry on as we are, but if the
+different is larger, we should adjust our path of travel.  
 
-![Great job](https://raw.githubusercontent.com/niaxotim/erps-buggy-basic-movement/master/assets/great_job.png)
+For this, we'll use an ``||logic:if-else||`` block. Let's put one in after where we've set the sensorDifference.  
+
+#### ~ tutorialhint
+```blocks
+basic.forever(function () {
+    leftSensor = Kitronik_Move_Motor.readSensor(Kitronik_Move_Motor.LfSensor.Left)
+    rightSensor = Kitronik_Move_Motor.readSensor(Kitronik_Move_Motor.LfSensor.Right)
+    sensorDifference = Math.abs(leftSensor - rightSensor)
+    if (true) {
+    } else {
+    }
+})
+```
+
+### Step 7
+For our check, let's only change our path when the difference between the two sensors is greater than 10.  
+
+Use a ``||logic:0 > 0||`` block, and replace the left-hand-side with our 'sensorDifference' variable, and the right-hand-side to '10'.
+
+#### ~ tutorialhint
+```blocks
+basic.forever(function () {
+    leftSensor = Kitronik_Move_Motor.readSensor(Kitronik_Move_Motor.LfSensor.Left)
+    rightSensor = Kitronik_Move_Motor.readSensor(Kitronik_Move_Motor.LfSensor.Right)
+    sensorDifference = Math.abs(leftSensor - rightSensor)
+    if (sensorDifference > 10) {
+    } else {
+    }
+})
+```
+
+### Step 8
+So now we have a check, and we know we have to do *something*, but what exactly? Do we need to move more to the left, or the right?  
+
+Well, we can check that by seeing which sensor value is greater or smaller than the other. For that, we need *another* conditional statement!  
+
+Put another ``||if-else||`` block *inside* your first one - this is called *nesting*.
+
+#### ~ tutorialhint
+```blocks
+basic.forever(function () {
+    leftSensor = Kitronik_Move_Motor.readSensor(Kitronik_Move_Motor.LfSensor.Left)
+    rightSensor = Kitronik_Move_Motor.readSensor(Kitronik_Move_Motor.LfSensor.Right)
+    sensorDifference = Math.abs(leftSensor - rightSensor)
+    if (sensorDifference > 10) {
+        if (true) {
+        } else {
+        }
+    } else {
+    }
+})
+```
+
+### Step 9
+Inside the if-statement, put another ``||logic:0 > 0||`` block in, but this time, replace the 
+left-hand-side with our *leftSensor* variable, and the right-hand-side with our *rightSensor* variable.  
+
+#### ~ tutorialhint
+```blocks
+basic.forever(function () {
+    leftSensor = Kitronik_Move_Motor.readSensor(Kitronik_Move_Motor.LfSensor.Left)
+    rightSensor = Kitronik_Move_Motor.readSensor(Kitronik_Move_Motor.LfSensor.Right)
+    sensorDifference = Math.abs(leftSensor - rightSensor)
+    if (sensorDifference > 10) {
+        if (leftSensor > rightSensor) {
+        } else {
+        }
+    } else {
+    }
+})
+```
+
+### Step 10
+OK, now we can start adjusting our direction! To move to the right, we can temporarily turn off our right motor, but keep the left moving.  
+
+To move to the left, turn off the left motor, but keep the right moving.  
+
+We do this using ``||Kitronik_Move_Motor:turn off Left motor||`` and ``||Kitronik_Move_Motor:turn Right motor on direction Forward speed 30||``.
+
+In our if-statement, let's turn off the right motor and keep the left one moving.  
+
+#### ~ tutorialhint
+```blocks
+basic.forever(function () {
+    leftSensor = Kitronik_Move_Motor.readSensor(Kitronik_Move_Motor.LfSensor.Left)
+    rightSensor = Kitronik_Move_Motor.readSensor(Kitronik_Move_Motor.LfSensor.Right)
+    sensorDifference = Math.abs(leftSensor - rightSensor)
+    if (sensorDifference > 10) {
+        if (leftSensor > rightSensor) {
+            Kitronik_Move_Motor.motorOff(Kitronik_Move_Motor.Motors.MotorRight)
+            Kitronik_Move_Motor.motorOn(Kitronik_Move_Motor.Motors.MotorLeft, Kitronik_Move_Motor.MotorDirection.Forward, 30)
+        } else {
+    } else {
+    }
+})
+```
+### Step 11
+Can you add the blocks to make the motors change in the opposite direction in the 'else' part of our statement?  
+
+Check out the hint if you need help!  
+
+#### ~ tutorialhint
+```blocks
+basic.forever(function () {
+    leftSensor = Kitronik_Move_Motor.readSensor(Kitronik_Move_Motor.LfSensor.Left)
+    rightSensor = Kitronik_Move_Motor.readSensor(Kitronik_Move_Motor.LfSensor.Right)
+    sensorDifference = Math.abs(leftSensor - rightSensor)
+    if (sensorDifference > 10) {
+        if (leftSensor > rightSensor) {
+            Kitronik_Move_Motor.motorOff(Kitronik_Move_Motor.Motors.MotorRight)
+            Kitronik_Move_Motor.motorOn(Kitronik_Move_Motor.Motors.MotorLeft, Kitronik_Move_Motor.MotorDirection.Forward, 30)
+        } else {
+            Kitronik_Move_Motor.motorOff(Kitronik_Move_Motor.Motors.MotorLeft)
+            Kitronik_Move_Motor.motorOn(Kitronik_Move_Motor.Motors.MotorRight, Kitronik_Move_Motor.MotorDirection.Forward, 30)
+        }
+    } else {
+    }
+})
+```
+
+### Step 12
+Finally, if both sensors are showing the same thing, or have a difference less than 10, we just want to move forwards.  
+
+In our outer-most if-statement, set the 'else' part to use a ``||Kitronik_Move_Motor.move Forward at speed 30||`` block.  
+
+#### ~ tutorialhint
+```blocks
+basic.forever(function () {
+    leftSensor = Kitronik_Move_Motor.readSensor(Kitronik_Move_Motor.LfSensor.Left)
+    rightSensor = Kitronik_Move_Motor.readSensor(Kitronik_Move_Motor.LfSensor.Right)
+    sensorDifference = Math.abs(leftSensor - rightSensor)
+    if (sensorDifference > 10) {
+        if (leftSensor > rightSensor) {
+            Kitronik_Move_Motor.motorOff(Kitronik_Move_Motor.Motors.MotorRight)
+            Kitronik_Move_Motor.motorOn(Kitronik_Move_Motor.Motors.MotorLeft, Kitronik_Move_Motor.MotorDirection.Forward, 30)
+        } else {
+            Kitronik_Move_Motor.motorOff(Kitronik_Move_Motor.Motors.MotorLeft)
+            Kitronik_Move_Motor.motorOn(Kitronik_Move_Motor.Motors.MotorRight, Kitronik_Move_Motor.MotorDirection.Forward, 30)
+        }
+    } else {
+        Kitronik_Move_Motor.move(Kitronik_Move_Motor.DriveDirections.Forward, 30)
+    }
+})
+```
+
+### Step 13
+Connect your BBC micro:bit and click ``|Download|`` to transfer your code.  
+
+Make sure that your micro:bit is plugged in to your buggy, and that the buggy is switched on.  
+
+Put the buggy on to the road mat, using the side with the continuous line. Does your buggy follow the line successfully?
+
+
+### Motorised Buggy - Line Following Tutorial Complete @unplugged
+Great work! You've got the workings of a self-driving vehicle! Awesome! 
+
+![Great job](https://raw.githubusercontent.com/niaxotim/erps-buggy-line-follower/master/assets/great_job.png)
