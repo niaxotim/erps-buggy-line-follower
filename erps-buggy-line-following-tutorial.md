@@ -189,7 +189,7 @@ OK, now we can start adjusting our direction! To move to the right, we can tempo
 
 To move to the left, turn off the left motor, but keep the right moving.  
 
-We do this using ``||Kitronik_Move_Motor:turn off Left motor||`` and ``||Kitronik_Move_Motor:turn Right motor on direction Forward speed 30||``.
+We do this using ``||Kitronik_Move_Motor:turn off Right motor||`` and ``||Kitronik_Move_Motor:turn Left motor on direction Forward speed 30||``.
 
 In our if-statement, let's turn off the right motor and keep the left one moving.  
 
