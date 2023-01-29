@@ -148,7 +148,7 @@ So now we have a check, and we know we have to do *something*, but what exactly?
 
 Well, we can check that by seeing which sensor value is greater or smaller than the other. For that, we need *another* conditional statement!  
 
-Put another ``||if-else||`` block *inside* your first one - this is called *nesting*.
+Put another ``||logic:if-else||`` block *inside* your first one - this is called *nesting*.
 
 #### ~ tutorialhint
 ```blocks
